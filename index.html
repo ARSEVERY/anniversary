@@ -16,26 +16,52 @@
             margin: 0; padding: 0; height: 100%;
             font-family: 'Poppins', sans-serif;
             color: white; overflow-x: hidden;
-            background: #2c3e50; /* Better fallback color */
+            background: #1a1a1a; 
         }
 
-        /* --- Background Wallpaper Slideshow --- */
-        .bg-slideshow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2; list-style: none; margin: 0; padding: 0;
+        /* --- Sliding Banner --- */
+        .sliding-banner {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            background: rgba(241, 196, 15, 0.9);
+            color: #1a1a1a;
+            padding: 10px 0;
+            font-weight: 700;
+            z-index: 2000;
+            overflow: hidden;
+            display: none; /* Hidden until startApp */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .bg-slideshow li {
-            position: absolute; width: 100%; height: 100%;
-            background-size: cover; 
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0; 
-            transition: opacity 3s ease-in-out;
+        .banner-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: slideText 15s linear infinite;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+
+        @keyframes slideText {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* --- Wallpaper Fix --- */
+        .wallpaper-container {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh; z-index: -2;
+        }
+
+        .bg-img {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%; object-fit: cover;
+            opacity: 0; transition: opacity 2s ease-in-out;
         }
 
         .overlay-dark {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.65); z-index: -1;
         }
 
@@ -44,82 +70,67 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #2c3e50, #000000);
             display: flex; justify-content: center; align-items: center;
-            z-index: 1000; cursor: pointer;
+            z-index: 3000; cursor: pointer;
         }
 
         .liquid-glass-btn {
             padding: 25px 50px; font-size: 1.5rem;
             background: var(--glass); backdrop-filter: blur(15px);
             border: 1px solid var(--border); border-radius: 15px;
-            color: white; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.4s; letter-spacing: 2px;
-            text-transform: uppercase;
+            color: white; text-transform: uppercase;
         }
 
         /* --- Content Layout --- */
         .container {
             display: none; flex-direction: column; align-items: center;
-            padding: 60px 20px; text-align: center;
+            padding: 80px 20px 60px; text-align: center;
         }
 
         .counter-card {
             background: var(--glass); backdrop-filter: blur(20px);
             border: 1px solid var(--border); border-radius: 30px;
-            padding: 50px; margin-top: 50px; width: 80%; max-width: 600px;
+            padding: 50px; margin-top: 30px; width: 85%; max-width: 600px;
         }
 
         #day-count {
             font-family: 'Playfair Display', serif;
             font-size: 5rem; display: block; color: var(--gold);
-            margin: 10px 0;
         }
 
-        /* --- Memorable Moments Gallery --- */
+        /* --- Spacing Fix for Gallery --- */
         .photo-grid {
             display: flex;
             justify-content: center;
             flex-wrap: wrap; 
-            gap: 40px; /* Increased gap to stop them from being too close */
-            margin: 40px auto;
-            max-width: 1000px;
-            padding-bottom: 50px;
+            gap: 50px; /* Separates the images */
+            margin: 60px auto;
+            max-width: 1200px;
+            padding-bottom: 100px;
         }
 
         .photo-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 15px;
             padding: 15px;
-            width: 240px; 
+            width: 260px; 
             transition: 0.3s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-
-        .photo-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--gold);
         }
 
         .photo-card img {
-            width: 100%;
-            height: 180px; 
-            object-fit: cover; 
-            border-radius: 8px;
+            width: 100%; height: 200px; 
+            object-fit: cover; border-radius: 10px;
         }
 
         .photo-card p {
-            font-size: 0.9rem;
-            margin-top: 12px;
-            color: var(--gold);
-            font-weight: 600;
+            font-size: 0.9rem; margin-top: 15px;
+            color: var(--gold); font-weight: 600;
         }
 
-        /* --- Floating Stickers --- */
         .sticker {
             position: fixed; bottom: -50px; z-index: 500;
             animation: floatUp 7s linear forwards; pointer-events: none;
-            opacity: 0.8;
         }
 
         @keyframes floatUp {
@@ -135,10 +146,16 @@
         <source src="YOUR_INSTRUMENTAL_URL.mp3" type="audio/mpeg">
     </audio>
 
-    <ul class="bg-slideshow" id="slideshow">
-        <li style="background-image: url('I/5.jpg'); opacity: 1;"></li>
-        <li style="background-image: url('I/2.jpg');"></li>
-    </ul>
+    <div class="sliding-banner" id="banner">
+        <div class="banner-text">
+            ✨ HAPPY ANNIVERSARY SIR! ✨ WISHING YOU A LIFETIME OF HAPPINESS ✨ CONGRATULATIONS ON THIS MILESTONE ✨ CELEBRATING YOUR LOVE STORY ✨
+        </div>
+    </div>
+
+    <div class="wallpaper-container" id="slideshow">
+        <img src="I/5.jpg" class="bg-img" style="opacity: 1;">
+        <img src="I/2.jpg" class="bg-img">
+    </div>
     <div class="overlay-dark"></div>
 
     <div id="reveal-screen" onclick="startApp()">
@@ -146,21 +163,21 @@
     </div>
 
     <div class="container" id="main-content">
-        <h1 style="font-family: 'Playfair Display'; font-size: 2.5rem;">Happy Marriage Anniversary!</h1>
+        <h1 style="font-family: 'Playfair Display'; font-size: 2.8rem; margin-bottom: 10px;">Happy Anniversary!</h1>
         
         <div class="counter-card">
-            <span style="letter-spacing: 3px;">Celebrating your journey of</span>
+            <span style="letter-spacing: 3px;">A journey spanning</span>
             <span id="day-count">0</span>
             <span style="font-size: 1.5rem; color: #ccc;">Days of Togetherness</span>
             
-            <div class="teacher-note" style="font-size: 1.1rem; line-height: 1.8; font-style: italic; margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px;">
-                "Dear Sir, your dedication in the classroom is an inspiration to us all. On this special day, we celebrate the beautiful partnership you share outside of it. Wishing you and your spouse a lifetime of joy and health!"
+            <div style="margin-top: 30px; border-top: 1px solid var(--border); padding-top: 20px; font-style: italic;">
+                "To a teacher who inspires us every day—may your personal journey be as bright and fulfilling as the path you show your students."
             </div>
         </div>
 
-        <div style="margin-top: 80px; margin-bottom: 20px;">
+        <div style="margin-top: 100px;">
             <p>Scroll down for some wonderful memories</p>
-            <span style="font-size: 2rem;">👇</span>
+            <span style="font-size: 2.5rem;">👇</span>
         </div>
 
         <div class="photo-grid">
@@ -183,8 +200,10 @@
         const weddingDate = new Date(2007, 2, 13);
 
         function startApp() {
-            document.getElementById('bgMusic').play().catch(() => console.log("Music play blocked"));
+            document.getElementById('bgMusic').play().catch(() => {});
             document.getElementById('reveal-screen').style.opacity = "0";
+            document.getElementById('banner').style.display = "block";
+            
             setTimeout(() => {
                 document.getElementById('reveal-screen').style.display = "none";
                 document.getElementById('main-content').style.display = "flex";
@@ -199,38 +218,37 @@
             const diff = Math.abs(today - weddingDate);
             const totalDays = Math.ceil(diff / (1000 * 60 * 60 * 24));
             let current = 0;
-            const step = Math.ceil(totalDays / 60);
             const timer = setInterval(() => {
-                current += step;
+                current += Math.ceil(totalDays / 50);
                 if (current >= totalDays) {
                     document.getElementById('day-count').innerText = totalDays.toLocaleString();
                     clearInterval(timer);
                 } else {
                     document.getElementById('day-count').innerText = current.toLocaleString();
                 }
-            }, 30);
+            }, 40);
         }
 
         function runStickers() {
-            const icons = ['✨', '🎓', '📚', '🥂', '⭐', '🎈', '💐', '🕊️'];
+            const icons = ['✨', '🎓', '📚', '🥂', '⭐', '🎈', '💐'];
             setInterval(() => {
                 const s = document.createElement('div');
                 s.className = 'sticker';
                 s.innerText = icons[Math.floor(Math.random() * icons.length)];
                 s.style.left = Math.random() * 100 + "vw";
-                s.style.fontSize = (Math.random() * 25 + 20) + "px";
+                s.style.fontSize = "30px";
                 document.body.appendChild(s);
                 setTimeout(() => s.remove(), 7000);
             }, 500);
         }
 
         function startSlideshow() {
-            const slides = document.querySelectorAll('#slideshow li');
-            let i = 0;
+            const images = document.querySelectorAll('.bg-img');
+            let current = 0;
             setInterval(() => {
-                slides[i].style.opacity = 0;
-                i = (i + 1) % slides.length;
-                slides[i].style.opacity = 1;
+                images[current].style.opacity = 0;
+                current = (current + 1) % images.length;
+                images[current].style.opacity = 1;
             }, 5000);
         }
     </script>
